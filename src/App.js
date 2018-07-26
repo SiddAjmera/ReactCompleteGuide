@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
+import cssClasses from './App.css';
 
 /* import Radium, { StyleRoot } from 'radium'; */
 
+import ErrorBoundry from './ErrorBoundry/ErrorBoundry';
 import Person from './Person/Person';
 
 class App extends Component {
@@ -41,20 +42,8 @@ class App extends Component {
 
   render() {
 
-    const style = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-      /* ':hover': {
-        backgroundColor: 'lightgreen',
-        color: 'black'
-      } */
-    };
-
     let persons = (<h3>Persons are hidden</h3>);
+    let buttonClass = '';
 
     if(this.state.showPersons) {
       persons = (
@@ -62,34 +51,31 @@ class App extends Component {
           {
             this.state.persons.map((person, index) => {
               return (
-                <Person
-                  key={person.id}
-                  delete={() => this.deletePersonHandler(index)}
-                  name={person.name} 
-                  age={person.age}
-                  changed={ (event) => this.nameChangeHandler(event, person.id) }/>
+                <ErrorBoundry key={person.id}>
+                  <Person
+                    delete={() => this.deletePersonHandler(index)}
+                    name={person.name} 
+                    age={person.age}
+                    changed={ (event) => this.nameChangeHandler(event, person.id) }/>
+                </ErrorBoundry>
               );
             })
           }
         </div>
       );
-      style.backgroundColor = 'red';
-      /* style[':hover'] = {
-        backgroundColor: 'salmon',
-        color: 'black'
-      }; */
+      buttonClass = cssClasses.Red;
     }
 
     const classes = [];
-    if(this.state.persons.length <=2) classes.push('red');
-    if(this.state.persons.length <=1) classes.push('bold');
+    if(this.state.persons.length <=2) classes.push(cssClasses.red);
+    if(this.state.persons.length <=1) classes.push(cssClasses.bold);
     
     return (
-      <div className="App">
+      <div className={cssClasses.App}>
         <h1>Hi! Welcome to my React App.</h1>
         <p className={classes.join(' ')}>This is really working!</p>
         <button 
-          style={style} 
+          className={buttonClass}
           onClick={this.togglePersonsVisibility}>
           {this.state.showPersons ? 'Hide Persons': 'Show Persons'}
         </button>
