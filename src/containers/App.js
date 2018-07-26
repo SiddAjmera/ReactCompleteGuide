@@ -3,21 +3,54 @@ import cssClasses from './App.css';
 
 import Cockpit from '../components/Cockpit/Cockpit';
 import Persons from '../components/Persons/Persons';
+import WithClass from '../hoc/WithClass';
+/* import Standard  from '../hoc/Standard'; */
+import StandardClass  from '../hoc/StandardClass';
 
 class App extends Component {
 
-  state = {
-    persons: [
-      { id: 'jkdshfkjhds1', name: 'Siddharth', age: 26 },
-      { id: 'lskdjgakjsd2', name: 'Krishna', age: 24 },
-      { id: 'kjsdhfuefiu3', name: 'Rajat', age: 25 }
-    ],
-    showPersons: false
-  };
+  constructor(props) {
+    super(props);
+    console.log('[App.js] Inside Constructor', props);
+    this.state = {
+      persons: [
+        { id: 'jkdshfkjhds1', name: 'Siddharth', age: 26 },
+        { id: 'lskdjgakjsd2', name: 'Krishna', age: 24 },
+        { id: 'kjsdhfuefiu3', name: 'Rajat', age: 25 }
+      ],
+      showPersons: false,
+      toggleClicked: 0
+    };
+  }
+
+  componentWillMount() {
+    console.log('[App.js] Inside componentWillMount');
+  }
+
+  componentDidMount() {
+    console.log('[App.js] Inside componentDidMount');
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[UPDATE App.js] Inside shouldComponentUpdate', nextProps, nextState);
+    return true;
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log('[UPDATE App.js] Inside componentWillUpdate', nextProps, nextState);
+  }
+
+  componentDidUpdate() {
+    console.log('[App.js] Inside componentDidUpdate');
+  }
 
   togglePersonsVisibility = () => {
-    this.setState({
-      showPersons: !this.state.showPersons
+    const showPersons = this.state.showPersons;
+    this.setState((prevState, props) => {
+      return {
+        showPersons: !showPersons,
+        toggleClicked: prevState.toggleClicked + 1 
+      }
     });
   }
 
@@ -40,6 +73,8 @@ class App extends Component {
 
   render() {
 
+    console.log('[App.js] Inside render');
+
     let persons = (<h3>Persons are hidden</h3>);
     
     if(this.state.showPersons) {
@@ -50,15 +85,17 @@ class App extends Component {
     }
 
     return (
-      <div className={cssClasses.App}>
+      <WithClass className={cssClasses.App}>
+        <button onClick={ () => this.setState({ showPersons: true })}>Show Persons</button>
         <Cockpit 
           persons={this.state.persons}
           togglePersonsVisibility={this.togglePersonsVisibility}
           showPersons={this.state.showPersons}/>
         {persons}
-      </div>
+      </WithClass>
     );
   }
 }
 
-export default App;
+/* export default Standard(App, cssClasses); */
+export default StandardClass(App, cssClasses);

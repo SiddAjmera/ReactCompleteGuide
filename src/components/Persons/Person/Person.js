@@ -1,19 +1,54 @@
-import React from 'react';
+import React, { Component } from 'react';
+
+import PropTypes from 'prop-types';
+
+import WithClass from '../../../hoc/WithClass';
 
 import cssClasses from './Person.css';
 
-const person = (props) => {
+class Person extends Component {
 
-  return (
-    <div className={cssClasses.Person}>
-      <p onClick={props.delete}>My name is {props.name} and my age is {props.age}</p>
-      <p>{props.children}</p>
-      <input 
-        type="text" 
-        onChange={props.changed}
-        value={props.name} />
-    </div>
-  );
+  constructor(props) {
+    super(props);
+    console.log('[Person.js] Inside Constructor', props);
+    this.inputElement = React.createRef();
+  }
+
+  componentWillMount() {
+    console.log('[Person.js] Inside componentWillMount');
+  }
+
+  componentDidMount() {
+    console.log('[Person.js] Inside componentDidMount');
+    this.inputElement.current.focus();
+  }
+
+  render() {
+
+    console.log('[Person.js] Inside render');
+
+    return (
+      <WithClass className={cssClasses.Person}>
+        <p 
+          onClick={this.props.delete}>
+          My name is {this.props.name} and my age is {this.props.age}
+        </p>
+        <p>{this.props.children}</p>
+        <input 
+          ref={this.inputElement}
+          type="text" 
+          onChange={this.props.changed}
+          value={this.props.name} />
+      </WithClass>
+    );
+  }
 }
 
-export default person;
+Person.propTypes = {
+  name: PropTypes.string,
+  age: PropTypes.number,
+  delete: PropTypes.func,
+  changed: PropTypes.func
+}
+
+export default Person;
