@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import Radium, { StyleRoot } from 'radium';
+/* import Radium, { StyleRoot } from 'radium'; */
 
 import Person from './Person/Person';
 
@@ -47,11 +47,11 @@ class App extends Component {
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
-      cursor: 'pointer',
-      ':hover': {
+      cursor: 'pointer'
+      /* ':hover': {
         backgroundColor: 'lightgreen',
         color: 'black'
-      }
+      } */
     };
 
     let persons = (<h3>Persons are hidden</h3>);
@@ -74,10 +74,10 @@ class App extends Component {
         </div>
       );
       style.backgroundColor = 'red';
-      style[':hover'] = {
+      /* style[':hover'] = {
         backgroundColor: 'salmon',
         color: 'black'
-      };
+      }; */
     }
 
     const classes = [];
@@ -85,20 +85,19 @@ class App extends Component {
     if(this.state.persons.length <=1) classes.push('bold');
     
     return (
-      <StyleRoot>
-        <div className="App">
-          <h1>Hi! Welcome to my React App.</h1>
-          <p className={classes.join(' ')}>This is really working!</p>
-          <button 
-            style={style} 
-            onClick={this.togglePersonsVisibility}>
-            {this.state.showPersons ? 'Hide Persons': 'Show Persons'}
-          </button>
-          {persons}
-        </div>
-      </StyleRoot>
+      <div className="App">
+        <h1>Hi! Welcome to my React App.</h1>
+        <p className={classes.join(' ')}>This is really working!</p>
+        <button 
+          style={style} 
+          onClick={this.togglePersonsVisibility}>
+          {this.state.showPersons ? 'Hide Persons': 'Show Persons'}
+        </button>
+        {persons}
+      </div>
     );
   }
 }
 
-export default Radium(App);
+/* export default Radium(App); */
+export default App;
