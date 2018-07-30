@@ -20,6 +20,10 @@ const cockpit = (props) => {
         onClick={props.togglePersonsVisibility}>
         {props.showPersons ? 'Hide Persons': 'Show Persons'}
       </button>
+      <button
+        onClick={props.login}>
+        Login
+      </button>
     </div>
   );
 }

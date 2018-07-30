@@ -7,6 +7,8 @@ import WithClass from '../hoc/WithClass';
 /* import Standard  from '../hoc/Standard'; */
 import StandardClass  from '../hoc/StandardClass';
 
+export const AuthContext = React.createContext(false);
+
 class App extends Component {
 
   constructor(props) {
@@ -19,13 +21,14 @@ class App extends Component {
         { id: 'kjsdhfuefiu3', name: 'Rajat', age: 25 }
       ],
       showPersons: false,
-      toggleClicked: 0
+      toggleClicked: 0,
+      authenticated: false
     };
   }
 
-  componentWillMount() {
+  /* componentWillMount() {
     console.log('[App.js] Inside componentWillMount');
-  }
+  } */
 
   componentDidMount() {
     console.log('[App.js] Inside componentDidMount');
@@ -36,11 +39,22 @@ class App extends Component {
     return true;
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  /* componentWillUpdate(nextProps, nextState) {
     console.log('[UPDATE App.js] Inside componentWillUpdate', nextProps, nextState);
+  } */
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log('[UPDATE App.js] Inside getDerivedStateFromProps', nextProps, prevState);
+    return prevState;
+  }
+
+  getSnapshotBeforeUpdate() {
+    // Get scroll position of user here
+    console.log('[UPDATE App.js] Inside getSnapshotBeforeUpdate');
   }
 
   componentDidUpdate() {
+    // Set scroll position of user here
     console.log('[App.js] Inside componentDidUpdate');
   }
 
@@ -71,6 +85,12 @@ class App extends Component {
     });
   }
 
+  loginHandler = () => {
+    this.setState({
+      authenticated: true
+    });
+  }
+
   render() {
 
     console.log('[App.js] Inside render');
@@ -90,8 +110,11 @@ class App extends Component {
         <Cockpit 
           persons={this.state.persons}
           togglePersonsVisibility={this.togglePersonsVisibility}
-          showPersons={this.state.showPersons}/>
-        {persons}
+          showPersons={this.state.showPersons}
+          login={this.loginHandler}/>
+          <AuthContext.Provider value={this.state.authenticated}>
+            {persons}
+          </AuthContext.Provider>
       </WithClass>
     );
   }

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import WithClass from '../../../hoc/WithClass';
+import { AuthContext } from '../../../containers/App';
 
 import cssClasses from './Person.css';
 
@@ -29,6 +30,9 @@ class Person extends Component {
 
     return (
       <WithClass className={cssClasses.Person}>
+        <AuthContext.Consumer>
+          {auth => auth ? 'I\'m Authenticated': 'I\'m not Authenticated'}
+        </AuthContext.Consumer>
         <p 
           onClick={this.props.delete}>
           My name is {this.props.name} and my age is {this.props.age}
